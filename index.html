@@ -2,188 +2,329 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comparaison d'avions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Style global */
-    body {
-      font-family: Arial, sans-serif;
+    /* Variables CSS */
+    :root {
+      --primary-color: #2563eb;
+      --secondary-color: #3b82f6;
+      --success-color: #22c55e;
+      --background-color: #f8fafc;
+      --card-background: #ffffff;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+    }
+
+    /* Reset et styles de base */
+    * {
+      margin: 0;
       padding: 0;
-      margin: 0;
-      background: #f9f9f9;
+      box-sizing: border-box;
     }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background-color);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
     .container {
-      width: 100%;
-      margin: 0;
-      background: #fff;
-      padding: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      border-radius: 0;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
     }
+
     h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
       text-align: center;
+      margin-bottom: 2rem;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .input-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
+
+    /* Style des inputs */
     input[type="text"] {
       width: 100%;
-      padding: 8px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      background: var(--card-background);
     }
-    button {
-      display: block;
-      margin: 10px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #4CAF50;
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    /* Style des boutons */
+    .add-column-btn {
+      background: var(--primary-color);
       color: white;
       border: none;
-      border-radius: 4px;
-    }
-    .error {
-      color: red;
-      text-align: center;
-      margin-top: 10px;
-    }
-    .visualization {
+      border-radius: var(--radius-md);
+      width: 36px;
+      height: 36px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
       display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      width: 100%;
-      overflow-x: auto;
-    }
-    .plane {
-      width: 45%;
-      text-align: center;
-    }
-    .plane-info {
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      margin: 10px 0;
+      justify-content: center;
     }
-    .plane-name {
-      font-weight: bold;
-      margin-bottom: 10px;
+
+    .add-column-btn:hover {
+      background: var(--secondary-color);
+      transform: scale(1.05);
     }
-    .plane-image {
-      max-width: 200px;
-      max-height: 150px;
-      margin: 10px auto;
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .plane-logo {
-      max-width: 100px;
-      max-height: 50px;
-      margin: 10px auto;
-    }
+
+    /* Style du tableau */
     .comparison-table {
       width: 100%;
-      border-collapse: collapse;
-      margin: 20px auto;
-      table-layout: fixed;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 2rem 0;
+      background: var(--card-background);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
     }
+
     .comparison-table th:first-child,
     .comparison-table td:first-child {
-      width: 150px;
+      width: 200px;
       position: sticky;
       left: 0;
-      background-color: #fff;
+      background: var(--card-background);
       z-index: 1;
     }
-    .comparison-table th:not(:first-child),
-    .comparison-table td:not(:first-child) {
-      min-width: 250px;
-    }
+
     .comparison-table th,
     .comparison-table td {
-      padding: 10px;
-      text-align: center;
-      border: 1px solid #ddd;
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
     }
+
     .comparison-table th {
-      background-color: #f5f5f5;
-      font-weight: bold;
+      background: var(--background-color);
+      font-weight: 600;
+      color: var(--text-secondary);
     }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Style des barres */
     .bar {
-      background-color: #4CAF50;
-      height: 30px;
-      line-height: 30px;
+      height: 2rem;
+      line-height: 2rem;
       color: white;
-      margin: 5px 0;
-      border-radius: 4px;
-      width: 100%;
-      max-width: 300px;
-    }
-    .bar.wingspan {
-      background-color: #2196F3;
-    }
-    .loading {
+      margin: 0.5rem 0;
+      border-radius: var(--radius-sm);
+      transition: width 0.3s ease;
+      font-weight: 500;
       text-align: center;
-      margin-top: 10px;
-      color: #666;
+      background: var(--primary-color);
     }
+
+    .bar.wingspan {
+      background: var(--secondary-color);
+    }
+
+    /* Style des images */
+    .plane-image {
+      max-width: 300px;
+      max-height: 200px;
+      margin: 1rem auto;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease;
+    }
+
+    .plane-image:hover {
+      transform: scale(1.02);
+    }
+
+    .plane-image.plan3vues {
+      background-color: white;
+      padding: 0.5rem;
+    }
+
+    .plane-logo {
+      max-width: 120px;
+      max-height: 60px;
+      margin: 1rem auto;
+      filter: grayscale(100%);
+      transition: all 0.2s ease;
+    }
+
+    .plane-logo:hover {
+      filter: grayscale(0%);
+    }
+
+    /* Style des liens */
+    .wikipedia-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .wikipedia-link:hover {
+      color: var(--secondary-color);
+    }
+
+    /* Style des icônes de liens */
+    .link-icons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .link-icon {
+      width: 24px;
+      height: 24px;
+      opacity: 0.7;
+      transition: all 0.2s ease;
+    }
+
+    .link-icon:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    /* Style des suggestions */
     .suggestions {
       position: absolute;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      background: var(--card-background);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
       max-height: 200px;
       overflow-y: auto;
-      width: calc(100% - 16px);
+      width: 100%;
       z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow-md);
+      margin-top: 0.5rem;
     }
+
     .suggestion-item {
-      padding: 8px;
+      padding: 0.75rem 1rem;
       cursor: pointer;
+      transition: background-color 0.2s ease;
     }
+
     .suggestion-item:hover {
-      background-color: #f0f0f0;
+      background-color: var(--background-color);
     }
-    .input-container {
-      position: relative;
-      margin-bottom: 15px;
+
+    /* Style des états de chargement et d'erreur */
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+      font-weight: 500;
     }
-    .wingspan {
-      margin-top: 10px;
-      color: #666;
-      font-size: 0.9em;
+
+    .error {
+      color: #ef4444;
+      text-align: center;
+      padding: 1rem;
+      background: #fee2e2;
+      border-radius: var(--radius-md);
+      margin: 1rem 0;
+      font-weight: 500;
     }
-    .add-column-btn {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      width: 30px;
-      height: 30px;
-      font-size: 20px;
-      cursor: pointer;
-      margin-left: 10px;
-      display: flex;
-      align-items: center;
+
+    /* Style du modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
       justify-content: center;
-      padding: 0;
-      line-height: 1;
+      align-items: center;
     }
-    .add-column-btn:hover {
-      background-color: #45a049;
+
+    .modal.active {
+      display: flex;
     }
-    .wikipedia-link {
-      color: #2196F3;
-      text-decoration: none;
-      font-weight: bold;
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 90vh;
+      position: relative;
     }
-    .wikipedia-link:hover {
-      text-decoration: underline;
+
+    .modal-image {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .modal-image.plan3vues {
+      background-color: white;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+    }
+
+    .modal-close:hover {
+      color: var(--secondary-color);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .comparison-table {
+        font-size: 0.875rem;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 0.75rem;
+      }
+
+      .plane-image {
+        max-width: 200px;
+      }
     }
   </style>
 </head>
@@ -217,9 +358,11 @@
           <tr>
             <td>Image</td>
             <td v-for="(plane, index) in planes" :key="index">
-              <a v-if="plane.data?.image" :href="'https://www.wikidata.org/wiki/' + plane.data.wikidataId" target="_blank">
-                <img :src="plane.data.image" :alt="plane.name" class="plane-image">
-              </a>
+              <img v-if="plane.data?.image" 
+                   :src="plane.data.image" 
+                   :alt="plane.name" 
+                   class="plane-image"
+                   @click="openModal(plane.data.image, false)">
             </td>
           </tr>
           <tr>
@@ -229,19 +372,19 @@
             </td>
           </tr>
           <tr>
-            <td>Page Wikipedia</td>
+            <td>Liens</td>
             <td v-for="(plane, index) in planes" :key="index">
-              <a :href="'https://fr.wikipedia.org/wiki/' + encodeURIComponent(plane.name)" target="_blank" class="wikipedia-link">
-                {{ plane.name }}
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>DBpedia</td>
-            <td v-for="(plane, index) in planes" :key="index">
-              <a :href="'http://fr.dbpedia.org/resource/' + encodeURIComponent(plane.name.replace(/\s+/g, '_'))" target="_blank" class="wikipedia-link">
-                {{ plane.name }}
-              </a>
+              <div class="link-icons">
+                <a :href="'https://fr.wikipedia.org/wiki/' + encodeURIComponent(plane.name)" target="_blank" title="Wikipedia">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/24px-Wikipedia-logo-v2.svg.png" alt="Wikipedia" class="link-icon">
+                </a>
+                <a v-if="plane.data?.wikidataId" :href="'https://www.wikidata.org/wiki/' + plane.data.wikidataId" target="_blank" title="Wikidata">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wikidata-logo.svg/24px-Wikidata-logo.svg.png" alt="Wikidata" class="link-icon">
+                </a>
+                <a :href="'http://fr.dbpedia.org/resource/' + encodeURIComponent(plane.name.replace(/\s+/g, '_'))" target="_blank" title="DBpedia">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/DBpedia.svg/24px-DBpedia.svg.png" alt="DBpedia" class="link-icon">
+                </a>
+              </div>
             </td>
           </tr>
           <tr>
@@ -271,7 +414,11 @@
           <tr>
             <td>Plan 3 vues</td>
             <td v-for="(plane, index) in planes" :key="index">
-              <img v-if="plane.data?.plan3Vues" :src="plane.data.plan3Vues" :alt="plane.name + ' plan 3 vues'" class="plane-image">
+              <img v-if="plane.data?.plan3Vues" 
+                   :src="plane.data.plan3Vues" 
+                   :alt="plane.name + ' plan 3 vues'" 
+                   class="plane-image plan3vues"
+                   @click="openModal(plane.data.plan3Vues, true)">
             </td>
           </tr>
         </tbody>
@@ -279,6 +426,17 @@
     </div>
     <div class="loading" v-if="isLoading">Recherche des données en cours...</div>
     <div class="error" v-if="error">{{ error }}</div>
+
+    <!-- Modal pour les images -->
+    <div class="modal" :class="{ active: modalImage }" @click="closeModal">
+      <div class="modal-content">
+        <button class="modal-close" @click="closeModal">&times;</button>
+        <img :src="modalImage" 
+             class="modal-image" 
+             :class="{ plan3vues: isPlan3Vues(modalImage) }"
+             alt="Image en grand format">
+      </div>
+    </div>
   </div>
   
   <!-- Inclusion de Vue.js depuis un CDN -->
@@ -297,7 +455,9 @@
         maxBarWidth: 300,
         suggestions: [],
         activeSuggestionIndex: -1,
-        searchTimeout: null
+        searchTimeout: null,
+        modalImage: null,
+        modalImageType: null
       },
       mounted() {
         this.comparePlanes();
@@ -532,6 +692,19 @@
           const maxWingspan = Math.max(...this.planes.map(plane => plane.data?.wingspan || 0));
           const maxValue = Math.max(maxLength, maxWingspan);
           return (value / maxValue) * this.maxBarWidth;
+        },
+        openModal(imageUrl, isPlan3Vues = false) {
+          this.modalImage = imageUrl;
+          this.modalImageType = isPlan3Vues ? 'plan3vues' : null;
+        },
+        
+        closeModal() {
+          this.modalImage = null;
+          this.modalImageType = null;
+        },
+
+        isPlan3Vues(imageUrl) {
+          return this.modalImageType === 'plan3vues';
         }
       }
     });
