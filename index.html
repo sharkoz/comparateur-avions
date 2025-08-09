@@ -598,7 +598,7 @@
 
         async searchDBpedia(query, wikidataData) {
           try {
-            const dbpediaUrl = `http://fr.dbpedia.org/data/${encodeURIComponent(query.replace(/\s+/g, '_'))}.json`;
+            const dbpediaUrl = `https://fr.dbpedia.org/data/${encodeURIComponent(query.replace(/\s+/g, '_'))}.json`;
             const response = await fetch(dbpediaUrl);
             const data = await response.json();
             
